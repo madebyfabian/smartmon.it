@@ -15,7 +15,7 @@
       </defs>
 
       <rect class="bgRect" width="104" x="0" y="0" rx="3" height="6" />
-      <rect class="currRect" :class="{ 'hasGradient': hasGradient }" :width="currPercentage" x="0" y="0" rx="3" height="6" />
+      <rect class="currRect" :class="{ 'hasGradient': hasGradient }" :width="currBarWidth" x="0" y="0" rx="3" height="6" />
     </svg>
   </div>
 </template>
@@ -31,8 +31,12 @@
     },
 
     computed: {
-      currPercentage() {
+      currBarWidth() {
         return Math.round((this.curr / this.max) * 101)
+      },
+
+      currPercentage() {
+        return Math.round((this.curr / this.max) * 100)
       }
     }
   }

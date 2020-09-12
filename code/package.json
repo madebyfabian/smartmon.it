@@ -1,6 +1,6 @@
 {
   "name": "smartmon.it",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Beautiful little tool to display your systems Temperatures, Fans and general usages.",
   "author": "Fabian Beer <hello@madebyfabian.com>",
