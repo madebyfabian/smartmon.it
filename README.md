@@ -1,4 +1,4 @@
-![Cover Art](cover.png?raw=true "Cover Art")
+![Cover Art](cover.jpg?raw=true "Cover Art")
 
 # smartmon.it
 Beautiful little tool to display your computers temperatures, fans and general usages.<br>
