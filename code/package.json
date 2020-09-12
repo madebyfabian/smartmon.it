@@ -1,0 +1,47 @@
+{
+  "name": "smartmon.it",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Beautiful little tool to display your systems Temperatures, Fans and general usages.",
+  "author": "Fabian Beer <hello@madebyfabian.com>",
+  "scripts": {
+    "start": "vue-cli-service electron:serve",
+    "build": "vue-cli-service electron:build && npm run electron:clean-release-folder",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps",
+    "electron:clean-release-folder": "cd ../ && del-cli --force ./win-unpacked && del-cli ./builder-effective-config.yaml && del-cli ./*.blockmap && del-cli ./.icon-ico",
+    "electron:generate-icons": "electron-icon-builder --input=./public/icon.png --output=public --flatten"
+  },
+  "main": "background.js",
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "electron-log": "^4.2.4",
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
+    "ws": "^7.3.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.0",
+    "@vue/cli-plugin-router": "^4.5.0",
+    "@vue/cli-service": "^4.5.0",
+    "del-cli": "^3.0.1",
+    "electron": "^9.0.0",
+    "electron-devtools-installer": "^3.1.0",
+    "electron-icon-builder": "^1.0.2",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.2",
+    "vue-cli-plugin-electron-builder": "^2.0.0-rc.4",
+    "vue-cli-plugin-svg": "^0.1.3",
+    "vue-svg-inline-loader": "^1.5.0",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "optionalDependencies": {
+    "bufferutil": "^4.0.1",
+    "utf-8-validate": "^5.0.2"
+  }
+}
