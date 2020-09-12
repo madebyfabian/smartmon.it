@@ -14,8 +14,16 @@ module.exports = {
         directories: {
           output: '../',
           buildResources: 'public'
-        }
-        // artifactName: '${productName} Setup ${version}.${ext}',
+        },
+        extraResources: [ 
+          {
+            "from": "./lib/",
+            "to": "lib",
+            "filter": [
+              "**/*"
+            ]
+          }
+        ]
       }
     }
   }

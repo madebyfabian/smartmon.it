@@ -26,4 +26,4 @@ pnpm-debug.log*
 dist_electron
 
 # OHM
-src/electron/ohm/OpenHardwareMonitor.config
+OpenHardwareMonitor.config

@@ -8,9 +8,6 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import { getOhmData, stopOhmService, startOhmService } from './electron/ohmUtils'
 import path from 'path'
 
-// Logger
-import log from 'electron-log'
-
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 
@@ -123,7 +120,6 @@ app.on('ready', async () => {
   const sendData = async () => {
     let ohmData = await getOhmData()
     ws.send(JSON.stringify(ohmData))
-    // console.log('[ws] Data sent.')
   }
 
   // Get the OHM Data for the first time. This can take up to 20 seconds!

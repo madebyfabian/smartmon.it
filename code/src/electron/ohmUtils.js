@@ -1,3 +1,4 @@
+import log from 'electron-log'
 import path from 'path'
 import { exec } from 'child_process'
 
@@ -5,9 +6,11 @@ const execPromise = ( command, options = { shell: 'powershell.exe' } ) => new Pr
   exec(command, options, ( err, stdout, stderr ) => { if (err) reject(err); if (stderr) reject(stderr); resolve(stdout) })
 })
 
-const nssmPath = path.join(process.cwd(), 'src/electron/nssm/nssm.exe')
-const SERVICE_NAME = 'SmartMonitOHM'
+const isDevelopment = process.env.NODE_ENV !== 'production',
+      SERVICE_NAME = 'SmartMonitOHM' + (isDevelopment ? '_DEV' : '')
 
+const nssmPath = path.join(isDevelopment ? process.cwd() : process.resourcesPath, 'lib/nssm/nssm.exe'),
+      ohmPath = path.join(isDevelopment ? process.cwd() : process.resourcesPath, 'lib/ohm/OpenHardwareMonitor.exe')
 
 export const startOhmService = async () => {
   try {
@@ -23,14 +26,12 @@ export const startOhmService = async () => {
     if (serviceStatus == 'Running')
       return
 
-    console.log('[OHM] Service exists and isn\'t running already')
-
     // Service exists and isn't running already
     await execPromise(`Start-Service -Name "${SERVICE_NAME}"`) // ${nssmPath} start ${SERVICE_NAME}
-    console.log('[OHM] Successfully started service.')
+    log.info(`[OHM] Successfully started service "${SERVICE_NAME}"`)
   
   } catch (err) {
-    console.error('\n\n--- Error while trying to start OHM Windows Service ---\n', err)
+    log.error('\n\n--- Error while trying to start OHM Windows Service ---\n', err)
   }
 }
 
@@ -47,7 +48,7 @@ export const getOhmData = async ( trials = 8 ) => {
         return _formatOhmData(execRes)
 
     } catch (error) {
-      console.error(`\n\n--- Error after ${doneTrials + 1} times trying to get data from ohm ---\n`, error)
+      log.error(`\n\n--- Error after ${doneTrials + 1} times trying to get data from ohm ---\n`, error)
       break
     }
 
@@ -60,7 +61,7 @@ export const getOhmData = async ( trials = 8 ) => {
 export const stopOhmService = async () => {
   try {
     await execPromise(`${nssmPath} stop ${SERVICE_NAME}`)
-    console.log('[OHM] Stopped service.')
+    log.info(`[OHM] Stopped service "${SERVICE_NAME}".`)
   } catch (_) {}
 }
 
@@ -73,20 +74,19 @@ const _getServiceStatus = async () => {
   try {
     return await execPromise(`(Get-Service "${SERVICE_NAME}").Status`) // `${nssmPath} status ${SERVICE_NAME}`
   } catch (_) {
-    console.log(`[OHM] Trying to get the service-status, but the service doesn't exist yet.`)
+    log.info(`[OHM] Trying to get the service-status of "${SERVICE_NAME}", but it doesn't exists yet.`)
     return null
   }
 }
 
 const _createService = async () => {
   try {
-    const ohmPath = path.join(process.cwd(), 'src/electron/ohm/OpenHardwareMonitor.exe')
-    await execPromise(`${nssmPath} install ${SERVICE_NAME} ${ohmPath}`)
-    await execPromise(`${nssmPath} set ${SERVICE_NAME} Start SERVICE_DEMAND_START`)
+    await execPromise(`& "${nssmPath}" install ${SERVICE_NAME} "${ohmPath}"`)
+    await execPromise(`& "${nssmPath}" set ${SERVICE_NAME} Start SERVICE_DEMAND_START`)
 
-    console.log(`[OHM] Successfully created service.`)
+    log.info(`[OHM] Successfully created service "${SERVICE_NAME}".`)
   } catch (err) {
-    console.error('\n\n--- Error while trying to create OHM Windows Service ---\n', err)
+    log.error('\n\n--- Error while trying to create OHM Windows Service ---\n', err)
   }
 }
 
@@ -141,7 +141,7 @@ const _formatOhmData = ( rawDataString, _debugFileName = 'default' ) => {
 
     return data
   } catch (err) {
-    console.error('\n\n--- Error while trying to parse OHM Data JSON string ---\n', err)
+    log.error('\n\n--- Error while trying to parse OHM Data JSON string ---\n', err)
   }
 }
 
