@@ -1,4 +1,4 @@
-![Plugin Cover Art](plugin-cover-art.png?raw=true "Plugin Cover Art")
+<!-- ![Plugin Cover Art](plugin-cover-art.png?raw=true "Plugin Cover Art") -->
 # smartmon.it
 Beautiful little tool to display your systems Temperatures, Fans and general usages.
 **Currently only works on Windows 10.**
