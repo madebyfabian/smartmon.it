@@ -9,3 +9,7 @@ Just download the .exe File in this repo and launch it. There you go!
 
 ## Contributing
 If you want to, just fork this repo and create a PR if you like to add/improve something!
+
+---
+
+Icons from https://www.flaticon.com/
