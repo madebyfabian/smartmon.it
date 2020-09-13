@@ -12,6 +12,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production',
 const nssmPath = path.join(isDevelopment ? process.cwd() : process.resourcesPath, 'lib/nssm/nssm.exe'),
       ohmPath = path.join(isDevelopment ? process.cwd() : process.resourcesPath, 'lib/ohm/OpenHardwareMonitor.exe')
 
+
 export const startOhmService = async () => {
   try {
     // First, check if Service already exists. If not, create it.
@@ -36,7 +37,7 @@ export const startOhmService = async () => {
 }
 
 
-export const getOhmData = async ( trials = 8 ) => {
+export const getOhmData = async ( trials = 25 ) => {
   const filter = ['Temperature', 'Load', 'Control', 'Fan', 'SmallData', 'Data'].map(entry => `SensorType like '${entry}'`).join(' OR ')
   
   // Loop, because it may be can take a few secs for the data to get delivered.
@@ -52,7 +53,7 @@ export const getOhmData = async ( trials = 8 ) => {
       break
     }
 
-    await _sleep(3000)
+    await _sleep(1000)
     doneTrials++
   }
 }
